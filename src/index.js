@@ -18,7 +18,38 @@ window.loadChart = (json) => {
         FileMaker.PerformScript("GetData", json);
       },
       columns: columns,
+
       type: "bar",
+      colors: {
+        Apples: "purple",
+        Peaches: "green",
+        Bananas: "yellow",
+        Plums: "purple",
+      },
+    },
+  });
+  chart2 = c3.generate({
+    bindto: "#chart2",
+    axis: { x: { type: "category", categories: categories } },
+    data: {
+      onclick: function (d, element) {
+        const i = d.index;
+        const id = d.id;
+        const month = categories[i];
+        console.log(month);
+        const data = { month, id };
+        const json = JSON.stringify(data);
+        FileMaker.PerformScript("GetData", json);
+      },
+      columns: columns,
+
+      type: "line",
+      colors: {
+        Apples: "red",
+        Peaches: "blue",
+        Bananas: "yellow",
+        Plums: "purple",
+      },
     },
   });
 };
@@ -26,6 +57,5 @@ window.loadChart = (json) => {
 window.loadNewData = (json) => {
   const obj = JSON.parse(json);
   const columns = obj.columns;
-  chart.load({ columns: columns });
-  chart.unload({ ids: ["Apples"] });
+  chart2.load({ columns: columns });
 };
